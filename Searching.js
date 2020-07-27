@@ -88,6 +88,7 @@ let sorted=arr.sort(function(a,b){return a-b;});
 //So, "25" becomes greater than "100".
 arr=[...temp];
 
+
 let s=performance.now();
 console.log(linearSearch(arr,199));
 let f= performance.now();
