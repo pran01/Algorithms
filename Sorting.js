@@ -74,22 +74,36 @@ function insertionSort(arr){
     return sorted;
 }//Time Complexity: O(n*2)
 
-
+//the main function for calling mergesort on an array
 function mergeSort(unsorted){
+    /*Merge Sort is a Divide and Conquer algorithm.
+    It divides input array in two halves, 
+    calls itself for the two halves and,
+    then merges the two sorted halves.*/
     let a=[...unsorted];
     if(a.length<=1)
+        //if a contains only 1 or 0 element,
+        //no need to do anything.
         return a;
-    
+
+    //finding middle index of array.
     let mid=Math.floor(a.length/2);
+    //slicing the array and copying the
+    //two halves in different arrays.
     let left=a.slice(0,mid);
     let right=a.slice(mid);
+    //merging the arrays after recursively calling
+    //itself on left and right part and then returning
+    //the merged array.
     return merge(mergeSort(left),mergeSort(right));
-}
+}//Time complexity: ⊖(nLogn).(best,average,worst).
 
+//The function for the key process of merging
+//the two arrays.
 function merge(left,right){
     let resultArray=[],leftIndex=0,rightIndex=0;
-    let k=0;
     while(leftIndex<left.length && rightIndex<right.length){
+        //picking the lesser one 
         if(left[leftIndex]<=right[rightIndex]){
             resultArray.push(left[leftIndex]);
             leftIndex++;
