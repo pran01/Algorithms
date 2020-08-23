@@ -74,8 +74,9 @@ function insertionSort(arr){
     return sorted;
 }//Time Complexity: O(n*2)
 
+
 //the main function for calling mergesort on an array
-function mergeSort(unsorted){
+function mergeSortRecursive(unsorted){
     /*Merge Sort is a Divide and Conquer algorithm.
     It divides input array in two halves, 
     calls itself for the two halves and,
@@ -95,12 +96,12 @@ function mergeSort(unsorted){
     //merging the arrays after recursively calling
     //itself on left and right part and then returning
     //the merged array.
-    return merge(mergeSort(left),mergeSort(right));
+    return mergeRecursive(mergeSortRecursive(left),mergeSortRecursive(right));
 }//Time complexity: ⊖(nLogn).(best,average,worst).
 
 //The function for the key process of merging
 //the two arrays.
-function merge(left,right){
+function mergeRecursive(left,right){
     let resultArray=[],leftIndex=0,rightIndex=0;
     while(leftIndex<left.length && rightIndex<right.length){
         //picking the lesser one 
@@ -124,6 +125,53 @@ function merge(left,right){
     return resultArray;
 }
 
+
+function mergeSortIterative(arr){
+    let sorted=[...arr];//copying the array so that original remains unchanged.
+    let n=sorted.length;
+    let currSize;
+    let leftStart;
+    for(currSize=1;currSize<=n-1;currSize=2*currSize){
+        for(leftStart=0;leftStart<n-1;leftStart+=2*currSize){
+            let mid=Math.min(leftStart+currSize-1,n-1);
+            let rightEnd=Math.min(leftStart+2*currSize-1,n-1);
+            // let left=sorted.slice(leftStart,mid);
+            // let right=sorted.slice(mid,rightEnd);
+            // sorted=mergeIterative(sorted,left,right);
+            mergeIterative(sorted,leftStart,mid,rightEnd);
+        }
+    }
+    return sorted;
+}
+
+function mergeIterative(sorted,leftStart,mid,rightEnd){
+    let left=sorted.slice(leftStart,mid);
+    let right=sorted.slice(mid,rightEnd);
+    let leftIndex=0,rightIndex=0,k=leftStart;
+    while(leftIndex<left.length && rightIndex<right.length){
+        //picking the lesser one 
+        if(left[leftIndex]<=right[rightIndex]){
+            sorted[k]=left[leftIndex];
+            leftIndex++;
+            k++;
+        }
+        else{
+            sorted[k]=right[rightIndex];
+            rightIndex++;
+            k++;
+        }
+    }
+    while(leftIndex<left.length && k<sorted.length){
+        sorted[k]=left[leftIndex];
+        leftIndex++;
+        k++;
+    }
+    while(rightIndex<right.length && k<sorted.length){
+        sorted[k]=right[rightIndex];
+        rightIndex++;
+        k++;
+    }
+}
 
 
 let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
@@ -149,7 +197,7 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 
 
 let s=performance.now();
-let sorted=mergeSort(arr);
+let sorted=mergeSortIterative(arr);
 console.log(`\n\nsorted array: ${sorted}`);
 let f=performance.now();
 console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
