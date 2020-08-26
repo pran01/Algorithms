@@ -133,8 +133,8 @@ function mergeSortIterative(arr){
     let leftStart;
     for(currSize=1;currSize<=n-1;currSize=2*currSize){
         for(leftStart=0;leftStart<n-1;leftStart+=2*currSize){
-            let mid=Math.min(leftStart+currSize-1,n-1);
-            let rightEnd=Math.min(leftStart+2*currSize-1,n-1);
+            let mid=Math.min(leftStart+currSize,n);
+            let rightEnd=Math.min(leftStart+2*currSize,n);
             // let left=sorted.slice(leftStart,mid);
             // let right=sorted.slice(mid,rightEnd);
             // sorted=mergeIterative(sorted,left,right);
@@ -143,7 +143,6 @@ function mergeSortIterative(arr){
     }
     return sorted;
 }
-
 function mergeIterative(sorted,leftStart,mid,rightEnd){
     let left=sorted.slice(leftStart,mid);
     let right=sorted.slice(mid,rightEnd);
@@ -173,6 +172,110 @@ function mergeIterative(sorted,leftStart,mid,rightEnd){
     }
 }
 
+// function mergeSort(arr){
+//     let a=[...arr];
+//     let finalArray=[...arr];
+//     if (a.length<=1)
+//         return a;
+//     let leftStart=0;
+//     let rightEnd=a.length-1;
+//     mergeSortHelper(a,leftStart,rightEnd,finalArray);
+//     return finalArray;
+// }
+
+// function mergeSortHelper(a,leftStart,rightEnd,finalArray){
+//     if (leftStart==rightEnd)
+//         return;
+//     const mid=Math.floor((leftStart+rightEnd)/2);
+    
+//     mergeSortHelper(a,leftStart,mid,finalArray);
+//     mergeSortHelper(a,mid+1,rightEnd,finalArray);
+//     merge(a,leftStart,mid,rightEnd,finalArray);
+// }
+
+// function merge(a,leftStart,mid,rightEnd,finalArray){
+//     let i=leftStart,j=mid+1,k=leftStart;
+//     while(i<=mid && j<=rightEnd){
+//         //picking the lesser one 
+//         if(a[i]<=a[j]){
+//             finalArray[k]=a[i];
+//             i++;
+//             k++;
+//         }
+//         else{
+//             finalArray[k]=a[j];
+//             j++;
+//             k++;
+//         }
+//     }
+//     while(i<=mid){
+//         finalArray[k]=a[i];
+//         i++;
+//         k++;
+//     }
+//     while(j<=rightEnd){
+//         finalArray[k]=a[j];
+//         j++;
+//         k++;
+//     }
+// }
+
+
+function merge(arr, l, m, r) 
+    { 
+        // Find sizes of two subarrays to be merged 
+        let n1 = m - l + 1; 
+        let n2 = r - m; 
+        /* Create temp arrays */
+        let L = arr.slice(l,m+1); 
+        let R = arr.slice(m+1,r+1);
+
+        /* Merge the temp arrays */
+
+        // Initial indexes of first and second subarrays 
+        let i = 0, j = 0; 
+
+        // Initial index of merged subarry array 
+        let k = l; 
+        while (i < n1 && j < n2) { 
+            if (L[i] <= R[j]) { 
+                arr[k] = L[i]; 
+                i++; 
+            } 
+            else { 
+                arr[k] = R[j]; 
+                j++; 
+            } 
+            k++; 
+        } 
+        /* Copy remaining elements of L[] if any */
+        while (i < n1) { 
+            arr[k] = L[i]; 
+            i++; 
+            k++; 
+        } 
+        /* Copy remaining elements of R[] if any */
+        while (j < n2) { 
+            arr[k] = R[j]; 
+            j++; 
+            k++; 
+        } 
+    } 
+    // Main function that sorts arr[l..r] using 
+    // merge() 
+function mergeSort(arr, l, r) 
+{ 
+    if (l==r)
+    return;
+    // Find the middle point 
+    let m = Math.floor((l + r) / 2); 
+    // Sort first and second halves 
+    mergeSort(arr, l, m); 
+    mergeSort(arr, m + 1, r); 
+    // Merge the sorted halves 
+    merge(arr, l, m, r); 
+}
+
 
 let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 
@@ -196,8 +299,15 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 // console.log(`\ninsertionSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
 
 
+// let s=performance.now();
+// let sorted=mergeSortRecurisve(arr);
+// console.log(`\n\nsorted array: ${sorted}`);
+// let f=performance.now();
+// console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+
+
 let s=performance.now();
-let sorted=mergeSortIterative(arr);
-console.log(`\n\nsorted array: ${sorted}`);
+mergeSort(arr,0,arr.length-1);
+console.log(`\n\nsorted array: ${arr}`);
 let f=performance.now();
 console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
