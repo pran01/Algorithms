@@ -277,6 +277,41 @@ function mergeSort(arr, l, r)
 }
 
 
+function quickSort(arr){
+    let a=[...arr];
+    let l=0;
+    let h=a.length-1;
+    quickSortHelper(a,l,h);
+    return a;
+}
+
+function quickSortHelper(a,l,h){
+    if(l-h>=0)
+    return;
+    let pi=partition(a,l,h);
+    quickSortHelper(a,l,pi-1);
+    quickSortHelper(a,pi+1,h);
+}
+
+function partition(a,l,h){
+    let pivot=a[h];
+    let i=l-1;
+    let temp;
+    for (let j=l;j<h;j++){
+        if(a[j]<pivot){
+            i++;
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
+        }
+    }
+    temp=a[i+1];
+    a[i+1]=a[h];
+    a[h]=temp;
+    return i+1;
+}
+
+
 let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 
 // let s=performance.now();
@@ -290,7 +325,6 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 // console.log(`\n\nsorted array: ${sorted}`);
 // f=performance.now();
 // console.log(`\nbubbleSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
-
 
 // s=performance.now();
 // sorted=insertionSort(arr);
@@ -306,8 +340,15 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 // console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
 
 
+// let s=performance.now();
+// mergeSort(arr,0,arr.length-1);
+// console.log(`\n\nsorted array: ${arr}`);
+// let f=performance.now();
+// console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+
+
 let s=performance.now();
-mergeSort(arr,0,arr.length-1);
-console.log(`\n\nsorted array: ${arr}`);
+let sorted=quickSort(arr);
+console.log(`\n\nsorted array: ${sorted}`);
 let f=performance.now();
 console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
