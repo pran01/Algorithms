@@ -135,9 +135,6 @@ function mergeSortIterative(arr){
         for(leftStart=0;leftStart<n-1;leftStart+=2*currSize){
             let mid=Math.min(leftStart+currSize,n);
             let rightEnd=Math.min(leftStart+2*currSize,n);
-            // let left=sorted.slice(leftStart,mid);
-            // let right=sorted.slice(mid,rightEnd);
-            // sorted=mergeIterative(sorted,left,right);
             mergeIterative(sorted,leftStart,mid,rightEnd);
         }
     }
@@ -171,54 +168,6 @@ function mergeIterative(sorted,leftStart,mid,rightEnd){
         k++;
     }
 }
-
-// function mergeSort(arr){
-//     let a=[...arr];
-//     let finalArray=[...arr];
-//     if (a.length<=1)
-//         return a;
-//     let leftStart=0;
-//     let rightEnd=a.length-1;
-//     mergeSortHelper(a,leftStart,rightEnd,finalArray);
-//     return finalArray;
-// }
-
-// function mergeSortHelper(a,leftStart,rightEnd,finalArray){
-//     if (leftStart==rightEnd)
-//         return;
-//     const mid=Math.floor((leftStart+rightEnd)/2);
-    
-//     mergeSortHelper(a,leftStart,mid,finalArray);
-//     mergeSortHelper(a,mid+1,rightEnd,finalArray);
-//     merge(a,leftStart,mid,rightEnd,finalArray);
-// }
-
-// function merge(a,leftStart,mid,rightEnd,finalArray){
-//     let i=leftStart,j=mid+1,k=leftStart;
-//     while(i<=mid && j<=rightEnd){
-//         //picking the lesser one 
-//         if(a[i]<=a[j]){
-//             finalArray[k]=a[i];
-//             i++;
-//             k++;
-//         }
-//         else{
-//             finalArray[k]=a[j];
-//             j++;
-//             k++;
-//         }
-//     }
-//     while(i<=mid){
-//         finalArray[k]=a[i];
-//         i++;
-//         k++;
-//     }
-//     while(j<=rightEnd){
-//         finalArray[k]=a[j];
-//         j++;
-//         k++;
-//     }
-// }
 
 
 function merge(arr, l, m, r) 
@@ -276,38 +225,71 @@ function mergeSort(arr, l, r)
     merge(arr, l, m, r); 
 }
 
-
+//The main function to call quick sort on an array.
 function quickSort(arr){
-    let a=[...arr];
-    let l=0;
-    let h=a.length-1;
+    /*Like Merge Sort, 
+    QuickSort is a Divide and Conquer algorithm.
+    It picks an element as pivot and 
+    partitions the given array around the picked pivot.*/
+    let a=[...arr];//copying the array.
+    let l=0;//low index
+    let h=a.length-1;//high index
     quickSortHelper(a,l,h);
     return a;
 }
+//T(n) = T(k) + T(n-k-1) + ⊖(n)
+//The first two terms are for two recursive calls, 
+//the last term is for the partition process. 
+//k is the number of elements which are smaller than pivot.
 
+//The helper function for quick sort.
 function quickSortHelper(a,l,h){
+    //the base condition
+    //to end the recursion.
     if(l-h>=0)
     return;
+    //select the Pivot index
+    //after partitioning.
     let pi=partition(a,l,h);
+    //call the same function
+    //to do partition on the left side
+    //array of pivot index.
     quickSortHelper(a,l,pi-1);
+    //to do partition on the right side
+    //array of pivot index.
     quickSortHelper(a,pi+1,h);
 }
 
 function partition(a,l,h){
+    /*Target of partitions is, 
+    given an array and an element x of array as pivot, 
+    put x at its correct position in sorted array 
+    and put all smaller elements (smaller than x) before x, 
+    and put all greater elements (greater than x) after x. 
+    All this should be done in linear time.*/
+
+    //select the element at high index as pivot.
     let pivot=a[h];
+    //i=index with lower element.
     let i=l-1;
     let temp;
     for (let j=l;j<h;j++){
+        //check every element of array from low to high-1.
         if(a[j]<pivot){
+            //if the number is less than pivot
+            //swap the number with number at index i.
             i++;
             temp=a[i];
             a[i]=a[j];
             a[j]=temp;
         }
     }
+    //after swapping all the elements less than pivot,
+    //put pivot at the next index.
     temp=a[i+1];
     a[i+1]=a[h];
     a[h]=temp;
+    //return the index of pivot.
     return i+1;
 }
 
