@@ -293,18 +293,67 @@ function partition(a,l,h){
     return i+1;
 }
 
-
+//Function to turn the array into a
+//max heap with root at index i.
 function heapify(arr,length,i){
+    //largest is the index with the
+    //largest element.
     let largest=i;
+    //pointing to the left child
     let left=i*2+1;
+    //pointing to the right child
     let right=left+1;
+    //if left child has the greater value,
+    //let largest point to the left child
     if (left<length && arr[left]>arr[largest])
         largest=left;
-    else if (right<length && arr[right]>arr[largest])
+    //similarly check the right child.
+    if (right<length && arr[right]>arr[largest])
         largest=right;
+    //if at last, largest is pointing to
+    //either of the child, swap it with the parent.
     if(largest!=i){
         [arr[largest],arr[i]]=[arr[i],arr[largest]];
+        //and then call heapify recursively
+        //to make sure all the nodes below are in order.
         heapify(arr,length,largest);
+    }
+}
+
+//The main function that sorts the array.
+function heapSort(a){
+    /*Heap sort is a comparison based 
+    sorting technique based on Binary Heap data structure. 
+    It is similar to selection sort where we first find 
+    the maximum element and place the maximum element 
+    at the end. We repeat the same process for 
+    the remaining elements.*/
+    let arr=[...a];
+    let length=arr.length;
+    //last parent of the heap is always
+    //equal to (arr.length/2)-1 in the array.
+    let i=Math.floor((length/2)-1);
+    //last child of the heap is always in
+    //the last index of the array.
+    let j=length-1;
+    while (i>=0){
+        //starting from the last parent
+        //heapify the way back up to convert
+        //the array into a max-heap.
+        heapify(arr,length,i);
+        i--;
+    }
+
+    while (j>=0){
+        //swap the last element with the root
+        //node.
+        [arr[0],arr[j]]=[arr[j],arr[0]];
+        //as j indicates the last element, it
+        //can also be used as the decremented length.
+        heapify(arr,j,0);
+        //decrease the length by 1, as the
+        //last element is considered removed.
+        j--;
     }
     return arr;
 }
@@ -345,8 +394,15 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 // console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
 
 
-let s=performance.now();
-let sorted=quickSort(arr);
-console.log(`\n\nsorted array: ${sorted}`);
-let f=performance.now();
-console.log(`\nmergeSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+// let s=performance.now();
+// let sorted=quickSort(arr);
+// console.log(`\n\nsorted array: ${sorted}`);
+// let f=performance.now();
+// console.log(`\nquickSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+
+
+// let s=performance.now();
+// let sorted=heapSort(arr);
+// console.log(`\n\nsorted array: ${sorted}`);
+// let f=performance.now();
+// console.log(`\nheapSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
