@@ -294,6 +294,22 @@ function partition(a,l,h){
 }
 
 
+function heapify(arr,length,i){
+    let largest=i;
+    let left=i*2+1;
+    let right=left+1;
+    if (left<length && arr[left]>arr[largest])
+        largest=left;
+    else if (right<length && arr[right]>arr[largest])
+        largest=right;
+    if(largest!=i){
+        [arr[largest],arr[i]]=[arr[i],arr[largest]];
+        heapify(arr,length,largest);
+    }
+    return arr;
+}
+
+
 let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 
 // let s=performance.now();
