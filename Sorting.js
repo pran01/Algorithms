@@ -359,6 +359,63 @@ function heapSort(a){
 }
 
 
+//Find the Minimum length Unsorted Subarray, sorting which, makes the complete array sorted.
+function minimumUnsortedSubarray(arr){
+    let n=arr.length;
+    let s=0,e=n-1;
+    //start from the beginning and travel left to right
+    while (s<n-1){
+        //find the first number that is greater than the next one.
+        if(arr[s]>arr[s+1])
+            break;
+        s++;
+    }
+    //similarly now traverse from right to left.
+    while (e>0){
+        //find the first number from the right which is
+        //less than its left one.
+        if (arr[e]<arr[e-1])
+            break;
+        e--;
+    }
+    //Now check if sorting the subarray contained between 
+    //indices s and e sorts the whole array or not.
+
+    //First, find the minimum and maximum number in subarray.
+    let min=arr[s],max=arr[e];
+    for (let i=s;i<=e;i++){
+        if(arr[i]<min)
+            min=arr[i];
+        if(arr[i]>max)
+            max=arr[i];
+    }
+    //now, check the left side of the array,
+    //If theres a number that is greater than the min,
+    //s will be equal to that number.
+    //Logic:If a number is greater than the minimum number in subarray,
+    //and its in the left side of subarray,it should be contained in 
+    //that subarray and needs to be sorted.
+    for(let j=0;j<s;j++){
+        if(arr[j]>min)
+            s=j;
+    }
+    //similarly check the right side of subarray and
+    //find the number that is lesser than the maximum of that subarray.
+    for (let j=e+1;j<n;j++){
+        if(arr[j]<max)
+            e=j;
+    }
+    //Finally, the s and e we have are the required indices.
+    console.log(`The minimum length subarray,sorting which makes
+    the complete array sorted lies between index ${s} and ${e}`);
+}
+
+
+
+
+
+
+let arr1=[10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60];
 let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 
 // let s=performance.now();
@@ -406,3 +463,5 @@ let arr=[67,87,45,69,98,123,564,77,35,56,46,84,107,125,22];
 // console.log(`\n\nsorted array: ${sorted}`);
 // let f=performance.now();
 // console.log(`\nheapSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+
+minimumUnsortedSubarray(arr);
