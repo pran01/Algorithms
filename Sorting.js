@@ -425,11 +425,62 @@ function sortInWaveForm_2(arr) {
   return a;
 } //It takes O(n) time as the array is traversed only once.
 
+//Given two sorted arrays and a number x,
+//find the pair whose sum is closest to x and the pair has an element from each array.
+function closestPair(arr1, arr2, x) {
+  //Both arrays should be sorted.
+  let n1 = arr1.length,
+    n2 = arr2.length,
+    less1,
+    less2;
+  for (let i = 0; i < n1; i++) {
+    if (arr1[i] < x) less1 = arr1[i];
+  }
+  for (let i = 0; i < n2; i++) {
+    if (arr2[i] < x) less2 = arr2[i];
+  }
+  let less = Math.max(less1, less2);
+  if (less == less1) {
+    let i = 0;
+    while (i < n2 && arr2[i] + less < x) {
+      i++;
+    }
+    let add1 = arr2[i - 1] + less;
+    let add2 = arr2[i] + less;
+    if (Math.abs(add1 - x) > Math.abs(add2 - x)) {
+      console.log(
+        `From Array 1 choose ${less} and from Array 2 choose ${arr2[i]}`
+      );
+    } else
+      console.log(
+        `From Array 1 choose ${less} and from Array 2 choose ${arr2[i - 1]}`
+      );
+  } else {
+    let i = 0;
+    while (i < n1 && arr1[i] + less < x) {
+      i++;
+    }
+    let add1 = arr1[i - 1] + less;
+    let add2 = arr1[i] + less;
+    if (Math.abs(add1 - x) > Math.abs(add2 - x)) {
+      console.log(
+        `From Array 1 choose ${arr1[i]} and from Array 2 choose ${less}`
+      );
+    } else
+      console.log(
+        `From Array 1 choose ${arr1[i - 1]} and from Array 2 choose ${less}`
+      );
+  }
+}
+
 let arr1 = [10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60];
 let arr = [67, 87, 45, 69, 98, 123, 564, 77, 35, 56, 46, 84, 107, 125, 22];
+let arr2 = [1, 4, 5, 7];
+let arr3 = [10, 20, 30, 40];
 
 // let s=performance.now();
 // let sorted=selectionSort(arr);
 // console.log(`\nsorted array: ${sorted}`);
 // let f=performance.now();
 // console.log(`\nselectionSort took ${f-s} ${((f-s)==1)?" millisecond":" milliseconds"}`)
+closestPair(arr2, arr3, 50);
