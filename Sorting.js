@@ -471,7 +471,7 @@ function closestPair(arr1, arr2, x) {
         `From Array 1 choose ${arr1[i - 1]} and from Array 2 choose ${less}`
       );
   }
-}
+} //My own algorithm for doing that with linear time complexity O(n).
 
 let arr1 = [10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60];
 let arr = [67, 87, 45, 69, 98, 123, 564, 77, 35, 56, 46, 84, 107, 125, 22];
