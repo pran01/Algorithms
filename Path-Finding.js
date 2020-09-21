@@ -84,9 +84,9 @@ class Stack {
     }
   }
 
-  //Print the size of Stack.
+  //Return the size of Stack.
   size() {
-    console.log(`Size of the stack: ${this.top + 1}`);
+    return this.top + 1;
   }
 
   //Display the elements of stack.
@@ -183,7 +183,7 @@ class Graph {
     let min = Infinity;
     let node;
     for (let i of dist.keys()) {
-      if (sp[i] == false && dist.get(i) < min) {
+      if (sp.get(i) == false && dist.get(i) < min && dist.get(i) != Infinity) {
         min = dist.get(i);
         node = i;
       }
@@ -198,55 +198,74 @@ class Graph {
       if (key == s) dist.set(key, 0);
       else dist.set(key, Infinity);
     }
+    for (let key of this.adjList.keys()) {
+      sp.set(key, false);
+    }
     let minNode = this.getMinNode(sp, dist);
-    let count = 0;
-    while (minNode != undefined) {
-      minNode = this.getMinNode(sp, dist);
-      console.log(minNode);
-      sp.set(minNode, true);
-      let adjNodes = this.adjList.get(minNode);
-      for (let i in adjNodes) {
-        let adjNode = adjNodes[i];
-        if (
-          dist.get(minNode) + this.getWeight(minNode, adjNode) <
-          dist.get(adjNode)
-        ) {
-          dist.set(
-            adjNode,
-            dist.get(minNode) + this.getWeight(minNode, adjNode)
-          );
-          parent.set(adjNode, minNode);
+    if (minNode != undefined) {
+      while (minNode != undefined) {
+        minNode = this.getMinNode(sp, dist);
+        sp.set(minNode, true);
+        let adjNodes = this.adjList.get(minNode);
+        for (let i in adjNodes) {
+          let adjNode = adjNodes[i];
+          if (
+            dist.get(minNode) + this.getWeight(minNode, adjNode["node"]) <
+            dist.get(adjNode["node"])
+          ) {
+            dist.set(
+              adjNode["node"],
+              dist.get(minNode) + this.getWeight(minNode, adjNode["node"])
+            );
+            parent.set(adjNode["node"], minNode);
+          }
         }
+        if (minNode == d) break;
       }
-      if (minNode == d) break;
     }
     let path = new Stack();
     let child = d;
-    while (child != s) {
+    while (child != s && child != undefined) {
       path.push(child);
       child = parent.get(child);
     }
     path.push(s);
-    path.display();
+    let pathPrint = "";
+    while (path.size() != 1) {
+      pathPrint += path.pop() + " ==> ";
+    }
+    pathPrint += path.pop();
+    console.log(pathPrint);
   }
 }
 
 let g = new Graph();
-g.addVertex("Patna");
-g.addVertex("Delhi");
-g.addVertex("Gurgaon");
-g.addVertex("Vellore");
-g.addVertex("Coimbatore");
-g.addVertex("Mumbai");
-g.addEdge("Patna", "Delhi", 1);
-g.addEdge("Patna", "Mumbai", 1);
-g.addEdge("Patna", "Vellore", 1);
-g.addEdge("Delhi", "Gurgaon", 1);
-g.addEdge("Delhi", "Mumbai", 1);
-g.addEdge("Vellore", "Coimbatore", 1);
+g.addVertex("0");
+g.addVertex("1");
+g.addVertex("2");
+g.addVertex("3");
+g.addVertex("4");
+g.addVertex("5");
+g.addVertex("6");
+g.addVertex("7");
+g.addVertex("8");
+g.addEdge("0", "1", 4);
+g.addEdge("0", "7", 8);
+g.addEdge("1", "7", 11);
+g.addEdge("1", "2", 8);
+g.addEdge("2", "8", 2);
+g.addEdge("2", "5", 4);
+g.addEdge("2", "3", 7);
+g.addEdge("7", "8", 7);
+g.addEdge("7", "6", 1);
+g.addEdge("8", "6", 6);
+g.addEdge("6", "5", 2);
+g.addEdge("3", "5", 14);
+g.addEdge("5", "4", 10);
+g.addEdge("3", "4", 9);
 g.printGraph();
-// console.log("-----BFS:-----");
-// g.bfs("Vellore");
-// console.log("-----DFS:-----");
-// g.dfs("Vellore");
-g.djikstraPath("Patna", "Gurgaon");
+console.log("-----BFS:-----");
+g.bfs("0");
+console.log("-----DFS:-----");
+g.dfs("0");
+g.djikstraPath("0", "8");
